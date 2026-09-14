@@ -23,15 +23,17 @@ public class XulambsApp {
 
     private int exibirMenu() {
         cabecalho();
-        IO.println("1 - Comprar pizza");
-        IO.println("2 - Ver todas as pizzas");
+        IO.println("1 - abrir pedido");
+        IO.println("2 - alterar pedido");
+        IO.println("3 - relatório de pedido");
+        IO.println("4 - encerrar pedido");
         IO.println("0 - Sair");
         return Integer.parseInt(IO.readln("Digite sua opção: "));
     }
 
 
 
-    void comprarPizza(){
+    Pizza comprarPizza(){
         cabecalho();
         int adicionais = 
             Integer.parseInt(IO.readln("Quantos ingredientes? "));
@@ -40,7 +42,7 @@ public class XulambsApp {
         nova.adicionarIngredientes(adicionais);
 
         mostrarNota(nova);
-        listaPizzas.add(nova);
+        return nova;
     }
 
     void mostrarNota(Pizza pizza){
@@ -56,14 +58,37 @@ public class XulambsApp {
         }
     }
 
+    void abrirPedido(){
+        String querMais = "n";
+        Pedido novoPedido = new Pedido();
+        do{
+            Pizza novPizza = comprarPizza();
+            novoPedido.adicionarPizza(novPizza);
+            querMais = IO.readln("quer mais pizzas? ");
+        }while(querMais.equals("s"));
+    }
+
+    void alterarPedido(){
+        cabecalho();
+            int idPedido = Integer.parseInt(IO.readln("N do pedido: "));
+        String busca = String.format("Pedido n %d", idPedido);
+        for(Pedido ped : listaPedidos){
+            if (ped.relatorio().contains(busca)) {
+                //achei
+            }
+        }
+
+
+    }
+
     void main(){
         int opcao;
         listaPizzas = new LinkedList<>();
         do {
             opcao = exibirMenu();
             switch (opcao) {
-                case 1 -> comprarPizza();
-                case 2 -> mostrarPizzas();
+                case 1 -> abrirPedido();
+                case 2 -> alterarPedido();
                 case 0 -> IO.println("Encerrando!");
                 default -> IO.println("Opção inválida");
             }   
